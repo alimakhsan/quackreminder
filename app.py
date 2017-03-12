@@ -50,6 +50,44 @@ def webhook():
                 if messaging_event.get("postback"):  # user clicked/tapped "postback" button in earlier message
                     pass
 
+    try:
+        payload = request.get_data()
+        sender, message = messaging_events(payload)
+        if message == "help":
+            send_text_message(sender , "You can choose topic you would like to learn and practice from the menu on left. For more information you can drop us a message and we will reply back to you shortly. ")
+        if message == "topics_to_learn":
+            send_replies(
+                sender, 
+                "Select the topic you want to learn? 1.) Rational Numbers <br/> 2.) Linear Equation in One variable /n 3.) Understanding Quadrilaterals",
+                [
+                    quick_reply(
+                        "1",
+                        "rat"),
+                    quick_reply(
+                        "2",
+                        "LINEAR"),
+                    quick_reply(
+                        "3",
+                        "QUAD"),
+                    quick_reply(
+                        "4",
+                        "BT"),
+                    quick_reply(
+                        "5",
+                        "ON"),
+                    quick_reply(
+                        "6",
+                        "LINEAR"),
+                    quick_reply(
+                        "7",
+                        "QUAD"),
+                    quick_reply(
+                        "8",
+                        "BT"),
+                    quick_reply(
+                        "more",
+                        "BT")])
+
     return "ok", 200
 
 

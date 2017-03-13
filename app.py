@@ -39,7 +39,13 @@ def webhook():
                     recipient_id = messaging_event["recipient"]["id"]  # the recipient's ID, which should be your page's facebook ID
                     message_text = messaging_event["message"]["text"]  # the message's text
 
-                    send_message(sender_id, "got it, thanks!")
+                    if message_text == "hi":
+                        send_message(sender_id, "Hi there!")
+                    elif message_text == "main yuk":
+                        send_message(sender_id, "ayo gan!")
+                    else:
+                        send_message(sender_id, "sorry i didn't know")
+
 
                 if messaging_event.get("delivery"):  # delivery confirmation
                     pass
@@ -68,25 +74,7 @@ def send_message(recipient_id, message_text):
             "id": recipient_id
         },
         "message": {
-            "attachment":{
-                "type":"template",
-                    "payload":{
-                    "template_type":"button",
-                    "text":message_text,
-                    "buttons":[
-                      {
-                        "type":"web_url",
-                        "url":"https://petersapparel.parseapp.com",
-                        "title":"show my reminders"
-                      },
-                      {
-                        "type":"postback",
-                        "title":"reschedule",
-                        "payload":"USER_DEFINED_PAYLOAD"
-                      }
-                    ]
-                }
-            }
+            "text":message_text
         }
     })
     r = requests.post("https://graph.facebook.com/v2.6/me/messages", params=params, headers=headers, data=data)

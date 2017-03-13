@@ -28,65 +28,27 @@ def webhook():
     data = request.get_json()
     log(data)  # you may not want to log every incoming message in production, but it's good for testing
 
-    # if data["object"] == "page":
+    if data["object"] == "page":
 
-    #     for entry in data["entry"]:
-    #         for messaging_event in entry["messaging"]:
+        for entry in data["entry"]:
+            for messaging_event in entry["messaging"]:
 
-    #             if messaging_event.get("message"):  # someone sent us a message
+                if messaging_event.get("message"):  # someone sent us a message
 
-    #                 sender_id = messaging_event["sender"]["id"]        # the facebook ID of the person sending you the message
-    #                 recipient_id = messaging_event["recipient"]["id"]  # the recipient's ID, which should be your page's facebook ID
-    #                 message_text = messaging_event["message"]["text"]  # the message's text
+                    sender_id = messaging_event["sender"]["id"]        # the facebook ID of the person sending you the message
+                    recipient_id = messaging_event["recipient"]["id"]  # the recipient's ID, which should be your page's facebook ID
+                    message_text = messaging_event["message"]["text"]  # the message's text
 
-    #                 send_message(sender_id, "got it, thanks!")
+                    send_message(sender_id, "got it, thanks!")
 
-    #             if messaging_event.get("delivery"):  # delivery confirmation
-    #                 pass
+                if messaging_event.get("delivery"):  # delivery confirmation
+                    pass
 
-    #             if messaging_event.get("optin"):  # optin confirmation
-    #                 pass
+                if messaging_event.get("optin"):  # optin confirmation
+                    pass
 
-    #             if messaging_event.get("postback"):  # user clicked/tapped "postback" button in earlier message
-    #                 pass
-
-    try:
-        payload = request.get_data()
-        sender, message = messaging_events(payload)
-        if message == "help":
-            send_text_message(sender , "You can choose topic you would like to learn and practice from the menu on left. For more information you can drop us a message and we will reply back to you shortly. ")
-        if message == "topics_to_learn":
-            send_replies(
-                sender, 
-                "Select the topic you want to learn? 1.) Rational Numbers <br/> 2.) Linear Equation in One variable /n 3.) Understanding Quadrilaterals",
-                [
-                    quick_reply(
-                        "1",
-                        "rat"),
-                    quick_reply(
-                        "2",
-                        "LINEAR"),
-                    quick_reply(
-                        "3",
-                        "QUAD"),
-                    quick_reply(
-                        "4",
-                        "BT"),
-                    quick_reply(
-                        "5",
-                        "ON"),
-                    quick_reply(
-                        "6",
-                        "LINEAR"),
-                    quick_reply(
-                        "7",
-                        "QUAD"),
-                    quick_reply(
-                        "8",
-                        "BT"),
-                    quick_reply(
-                        "more",
-                        "BT")])
+                if messaging_event.get("postback"):  # user clicked/tapped "postback" button in earlier message
+                    pass
 
     return "ok", 200
 

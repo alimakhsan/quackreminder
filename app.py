@@ -33,21 +33,13 @@ def webhook():
         for entry in data["entry"]:
             for messaging_event in entry["messaging"]:
 
-                if messaging_event(request.get_data()) == "hi":  # someone sent us a message
+                if messaging_event.get("message"):  # someone sent us a message
 
                     sender_id = messaging_event["sender"]["id"]        # the facebook ID of the person sending you the message
                     recipient_id = messaging_event["recipient"]["id"]  # the recipient's ID, which should be your page's facebook ID
                     message_text = messaging_event["message"]["text"]  # the message's text
 
-                    send_message(sender_id, "Hello there!")
-
-                if messaging_event(request.get_data()) == "main yuk":  # someone sent us a message
-
-                    sender_id = messaging_event["sender"]["id"]        # the facebook ID of the person sending you the message
-                    recipient_id = messaging_event["recipient"]["id"]  # the recipient's ID, which should be your page's facebook ID
-                    message_text = messaging_event["message"]["text"]  # the message's text
-
-                    send_message(sender_id, "Ayo gan!")
+                    send_message(sender_id, "got it, thanks!")
 
                 if messaging_event.get("delivery"):  # delivery confirmation
                     pass
@@ -76,7 +68,25 @@ def send_message(recipient_id, message_text):
             "id": recipient_id
         },
         "message": {
-            "text":message_text
+            "attachment":{
+                "type":"template",
+                    "payload":{
+                    "template_type":"button",
+                    "text":message_text,
+                    "buttons":[
+                      {
+                        "type":"web_url",
+                        "url":"https://petersapparel.parseapp.com",
+                        "title":"show my reminders"
+                      },
+                      {
+                        "type":"postback",
+                        "title":"reschedule",
+                        "payload":"USER_DEFINED_PAYLOAD"
+                      }
+                    ]
+                }
+            }
         }
     })
     r = requests.post("https://graph.facebook.com/v2.6/me/messages", params=params, headers=headers, data=data)

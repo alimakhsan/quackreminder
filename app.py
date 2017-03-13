@@ -68,19 +68,25 @@ def send_message(recipient_id, message_text):
             "id": recipient_id
         },
         "message": {
-            "text": message_text,
-            "quick_replies":[
-                {
-                    "content_type":"text",
-                    "title":"Red",
-                    "payload":"DEVELOPER_DEFINED_PAYLOAD_FOR_PICKING_RED"
-                },
-                {
-                    "content_type":"text",
-                    "title":"Green",
-                    "payload":"DEVELOPER_DEFINED_PAYLOAD_FOR_PICKING_GREEN"
+            "attachment":{
+                "type":"template",
+                    "payload":{
+                    "template_type":"button",
+                    "text":message_text,
+                    "buttons":[
+                      {
+                        "type":"web_url",
+                        "url":"https://petersapparel.parseapp.com",
+                        "title":"Show Website"
+                      },
+                      {
+                        "type":"postback",
+                        "title":"Start Chatting",
+                        "payload":"USER_DEFINED_PAYLOAD"
+                      }
+                    ]
                 }
-            ]
+            }
         }
     })
     r = requests.post("https://graph.facebook.com/v2.6/me/messages", params=params, headers=headers, data=data)

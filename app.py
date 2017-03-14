@@ -39,13 +39,7 @@ def webhook():
                     recipient_id = messaging_event["recipient"]["id"]  # the recipient's ID, which should be your page's facebook ID
                     message_text = messaging_event["message"]["text"]  # the message's text
 
-                    if message_text == "hi":
-                        send_message(sender_id, "Hi there!")
-                    elif message_text == "main yuk":
-                        send_message(sender_id, "ayo gan!")
-                    else:
-                        send_message(sender_id, "sorry i didn't know")
-
+                    send_message(sender_id, message_text)
 
                 if messaging_event.get("delivery"):  # delivery confirmation
                     pass
@@ -66,27 +60,85 @@ def send_message(recipient_id, message_text):
     params = {
         "access_token": os.environ["PAGE_ACCESS_TOKEN"]
     }
+    
     headers = {
         "Content-Type": "application/json"
     }
-    data = json.dumps({
-        "recipient": {
-            "id": recipient_id
-        },
-        "message": {
-            "text":message_text
-        }
-    })
+    
+    if "hai" in message_text.lower():
+        two_button_template(recipient_id, "Hai juga, ada yang bisa aku bantu?", "show examples")
+
     r = requests.post("https://graph.facebook.com/v2.6/me/messages", params=params, headers=headers, data=data)
     if r.status_code != 200:
         log(r.status_code)
         log(r.text)
 
+def two_button_template(recipient_id, bot_message, button1, button2):
+    
+    data = json.dumps({
+        "recipient":{
+        "id": recipient_id
+        },
+        "message":{
+            "attachment":{
+              "type":"template",
+              "payload":{
+                "template_type":"button",
+                "text": bot_message,
+                "buttons":[
+                    {
+                        "type":"postback",
+                        "title": button1,
+                        "payload":"USER_DEFINED_PAYLOAD"
+                    },
+                    {
+                        "type":"postback",
+                        "title": button2,
+                        "payload":"USER_DEFINED_PAYLOAD"
+                    }
+                ]
+              }
+            }
+        }
+    })
+    
+
+def three_button_template(recipient_id, bot_message, button1, button2, button3):
+    
+    "recipient":{
+        "id": recipient_id
+    },
+    "message":{
+        "attachment":{
+          "type":"template",
+          "payload":{
+            "template_type":"button",
+            "text": bot_message,
+            "buttons":[
+                {
+                    "type":"postback",
+                    "title": button1,
+                    "payload":"USER_DEFINED_PAYLOAD"
+                },
+                {
+                    "type":"postback",
+                    "title": button2,
+                    "payload":"USER_DEFINED_PAYLOAD"
+                },
+                {
+                    "type":"postback",
+                    "title": button2,
+                    "payload":"USER_DEFINED_PAYLOAD"
+                }
+            ]
+          }
+        }
+    }
+
 
 def log(message):  # simple wrapper for logging to stdout on heroku
     print str(message)
     sys.stdout.flush()
-
 
 if __name__ == '__main__':
     app.run(debug=True)

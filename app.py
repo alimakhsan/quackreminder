@@ -65,7 +65,7 @@ def send_message(recipient_id, message_text):
         "Content-Type": "application/json"
     }
     
-    if "hai" in message_text.lower():
+    if "hai" in message_text:
         two_button_template(recipient_id, "Hai juga, ada yang bisa aku bantu?", "show examples", "show my reminders")
 
     r = requests.post("https://graph.facebook.com/v2.6/me/messages", params=params, headers=headers, data=data)

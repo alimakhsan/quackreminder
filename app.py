@@ -65,49 +65,26 @@ def send_message(recipient_id, message_text):
         "Content-Type": "application/json"
     }
     
-    if "hai" in message_text:
-        two_button_template(recipient_id, "Hai juga, ada yang bisa aku bantu?", "show examples", "show my reminders")
+    data = json.dumps({
+        "recipient":{
+        "id": recipient_id
+        },
+
+        if "hai" in message_text:
+            two_button_template("Hai juga!", "show examples", "show my reminders")
+        else:
+            two_button_template("Ada yang bisa aku bantu?", "help", "show examples")
+
+    })
+
 
     r = requests.post("https://graph.facebook.com/v2.6/me/messages", params=params, headers=headers, data=data)
     if r.status_code != 200:
         log(r.status_code)
         log(r.text)
 
-def two_button_template(recipient_id, bot_message, button1, button2):
+def two_button_template(bot_message, button1, button2):
     
-    data = json.dumps({
-        "recipient":{
-        "id": recipient_id
-        },
-        "message":{
-            "attachment":{
-              "type":"template",
-              "payload":{
-                "template_type":"button",
-                "text": bot_message,
-                "buttons":[
-                    {
-                        "type":"postback",
-                        "title": button1,
-                        "payload":"USER_DEFINED_PAYLOAD"
-                    },
-                    {
-                        "type":"postback",
-                        "title": button2,
-                        "payload":"USER_DEFINED_PAYLOAD"
-                    }
-                ]
-              }
-            }
-        }
-    })
-    
-
-def three_button_template(recipient_id, bot_message, button1, button2, button3):
-    
-    "recipient":{
-        "id": recipient_id
-    },
     "message":{
         "attachment":{
           "type":"template",
@@ -124,17 +101,11 @@ def three_button_template(recipient_id, bot_message, button1, button2, button3):
                     "type":"postback",
                     "title": button2,
                     "payload":"USER_DEFINED_PAYLOAD"
-                },
-                {
-                    "type":"postback",
-                    "title": button2,
-                    "payload":"USER_DEFINED_PAYLOAD"
                 }
             ]
           }
         }
-    }
-
+    }    
 
 def log(message):  # simple wrapper for logging to stdout on heroku
     print str(message)

@@ -66,7 +66,7 @@ def send_message(recipient_id, message_text):
     }
     
     if "hai" in message_text.lower():
-        two_button_template(recipient_id, "Hai juga, ada yang bisa aku bantu?", "show examples")
+        two_button_template(recipient_id, "Hai juga, ada yang bisa aku bantu?", "show examples", "show my reminders")
 
     r = requests.post("https://graph.facebook.com/v2.6/me/messages", params=params, headers=headers, data=data)
     if r.status_code != 200:

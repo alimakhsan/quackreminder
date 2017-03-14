@@ -39,7 +39,12 @@ def webhook():
                     recipient_id = messaging_event["recipient"]["id"]  # the recipient's ID, which should be your page's facebook ID
                     message_text = messaging_event["message"]["text"]  # the message's text
 
-                    send_message(sender_id, message_text)
+                    if message_text == "hi":
+                        send_message(sender_id, "Hi there!")
+                    elif message_text == "main yuk":
+                        send_two_button(sender_id, "ayo gan!", "main sekarang", "main besok")
+                    else:
+                        send_message(sender_id, "sorry i didn't know")
 
                 if messaging_event.get("delivery"):  # delivery confirmation
                     pass
@@ -60,33 +65,43 @@ def send_message(recipient_id, message_text):
     params = {
         "access_token": os.environ["PAGE_ACCESS_TOKEN"]
     }
-    
     headers = {
         "Content-Type": "application/json"
     }
-    
-    if 'hai' in message_text:
-        two_button_template(recipient_id, "Hai juga!", "show examples", "show my reminders")
-    else:
-        two_button_template(recipient_id, "Ada yang bisa aku bantu?", "help", "show examples")
-
+    data = json.dumps({
+        "recipient": {
+            "id": recipient_id
+        },
+        "message": {
+            "text":message_text
+        }
+    })
     r = requests.post("https://graph.facebook.com/v2.6/me/messages", params=params, headers=headers, data=data)
     if r.status_code != 200:
         log(r.status_code)
         log(r.text)
 
-def two_button_template(recipient_ids, bot_message, button1, button2):
-    
+
+def send_two_button(recipient_id, message_text, button1, button2):
+
+    log("sending message to {recipient}: {text}".format(recipient=recipient_id, text=message_text))
+
+    params = {
+        "access_token": os.environ["PAGE_ACCESS_TOKEN"]
+    }
+    headers = {
+        "Content-Type": "application/json"
+    }
     data = json.dumps({
-        "recipient":{
-        "id": recipient_ids
+        "recipient": {
+            "id": recipient_id
         },
-        "message":{
+        "message": {
             "attachment":{
-              "type":"template",
-              "payload":{
+            "type":"template",
+                "payload":{
                 "template_type":"button",
-                "text": bot_message,
+                "text":message_text,
                 "buttons":[
                     {
                         "type":"postback",
@@ -98,16 +113,20 @@ def two_button_template(recipient_ids, bot_message, button1, button2):
                         "title": button2,
                         "payload":"USER_DEFINED_PAYLOAD"
                     }
-                ]
-              }
+                ]}
             }
         }
     })
-    
+    r = requests.post("https://graph.facebook.com/v2.6/me/messages", params=params, headers=headers, data=data)
+    if r.status_code != 200:
+        log(r.status_code)
+        log(r.text)
+
 
 def log(message):  # simple wrapper for logging to stdout on heroku
     print str(message)
     sys.stdout.flush()
+
 
 if __name__ == '__main__':
     app.run(debug=True)

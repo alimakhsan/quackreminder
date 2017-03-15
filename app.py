@@ -22,7 +22,7 @@ def verify():
     return "Hello world", 200
 
 # word 
-greeting = ["hi", "hei", "hai", "hello", "hy", "oi"]
+greetings = ["hi", "hei", "hai", "hello", "hy", "oi"]
 
 @app.route('/', methods=['POST'])
 def webhook():
@@ -33,7 +33,7 @@ def webhook():
         sender, message = messaging_events(payload)
 
         #greetings
-        if any(greeting() for greeting in message.lower()):
+        if any(greeting == message.lower() for greeting in greetings):
             send_text_message(sender, "Hi there!")
 
         #help

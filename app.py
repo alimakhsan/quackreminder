@@ -37,10 +37,20 @@ def webhook():
             send_text_message(sender, "Hi there!")
 
         #help
-        elif message == "help":
-            send_text_message(sender , "You can choose topic you would like to learn and practice from the menu on left. For more information you can drop us a message and we will reply back to you shortly. ")
+        elif message.lower() == "help":
+            send_replies(sender , "What can I help you?",
+                [
+                    generate_button(
+                        "show me examples"
+                        ),
+                    generate_button(
+                        "show my reminders"
+                        )
+                ])
 
         #show examples
+
+
         #handle task 1    
         #handle task 2
         #handle task 3
@@ -51,39 +61,6 @@ def webhook():
         #handle task 8
         #handle task 9
         #handle task 10
-
-        elif message == "topics_to_learn":
-            send_replies(
-                sender, 
-                "Select the topic you want to learn? 1.) Rational Numbers <br/> 2.) Linear Equation in One variable /n 3.) Understanding Quadrilaterals",
-                [
-                    quick_reply(
-                        "1",
-                        "rat"),
-                    quick_reply(
-                        "2",
-                        "LINEAR"),
-                    quick_reply(
-                        "3",
-                        "QUAD"),
-                    quick_reply(
-                        "4",
-                        "BT"),
-                    quick_reply(
-                        "5",
-                        "ON"),
-                    quick_reply(
-                        "6",
-                        "LINEAR"),
-                    quick_reply(
-                        "7",
-                        "QUAD"),
-                    quick_reply(
-                        "8",
-                        "BT"),
-                    quick_reply(
-                        "more",
-                        "BT")])
 
         else:
             send_text_message(sender, "Sorry I'm just a little ducky")

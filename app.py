@@ -40,7 +40,7 @@ def webhook():
                     recipient_id = messaging_event["recipient"]["id"]  # the recipient's ID, which should be your page's facebook ID
                     message_text = messaging_event["message"]["text"]  # the message's text
 
-                    if 'show' && ('reminder' || 'schedule') in message_text.lower():
+                    if 'show' and ('reminder' or 'schedule') in message_text.lower():
                         send_message(sender_id, "Here's your reminder")
                         three_button(sender_id, "Meeting", "Tomorrow at 8 am", "mark as done", "reschedule", "delete")
                     elif 'main' in message_text.lower():

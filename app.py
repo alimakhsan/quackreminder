@@ -1,7 +1,6 @@
 import os
 import sys
 import json
-import string
 
 import requests
 from flask import Flask, request
@@ -23,55 +22,51 @@ def verify():
     return "Hello world", 200
 
 @app.route('/', methods=['POST'])
-
-# word 
-greetings = ['hi', 'hei', 'hai', 'hello', 'hy', 'oi']
-
 def webhook():
     data = request.get_json()
+
+    #words
+    greetings = ['hi', 'hei', 'hai', 'hello', 'hy', 'oi']
   
-    payload = request.get_data()
-    sender, message = messaging_events(payload)
+    try:
+        payload = request.get_data()
+        sender, message = messaging_events(payload)
 
-    #greetings
-    if any(greeting() == message.lower() for greeting in greetings):
-        send_text_message(sender, "Hi there!")
-
-    #help
-    elif message.lower() == "help":
-        send_button_template_message(sender, "What can I help you?",
-            [
-                generate_button(
-                    "show me examples"
-                    ),
-                generate_button(
-                    "show my reminders"
-                    )
-            ])
-
-    #show examples
-
-
-    #handle task 1    
-    #handle task 2
-    #handle task 3
-    #handle task 4
-    #handle task 5
-    #handle task 6
-    #handle task 7
-    #handle task 8
-    #handle task 9
-    #handle task 10
-
-    else:
-        send_text_message(sender, "Sorry I'm just a little ducky")
-               
+        #greetings
+        if any(greeting() == message.lower() for greeting in greetings):
+            send_text_message(sender, "Hi there!")
+        #help
+        elif message.lower() == "help":
+            send_button_template_message(sender, "What can I help you?",
+                [
+                    generate_button(
+                        "show me examples"
+                        ),
+                    generate_button(
+                        "show my reminders"
+                        )
+                ])
+        #show examples
+        #handle task 1    
+        #handle task 2
+        #handle task 3
+        #handle task 4
+        #handle task 5
+        #handle task 6
+        #handle task 7
+        #handle task 8
+        #handle task 9
+        #handle task 10
+        else:
+            send_text_message(sender, "Sorry I'm just a little ducky")
+            
+    except: 
+        pass        
     return "ok"
 
 def log(message):  # simple wrapper for logging to stdout on heroku
     print str(message)
     sys.stdout.flush()
-
 
 if __name__ == '__main__':
     app.run(debug=True)

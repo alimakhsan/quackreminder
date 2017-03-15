@@ -1,6 +1,7 @@
 import os
 import sys
 import json
+import string
 
 import requests
 from flask import Flask, request
@@ -22,7 +23,7 @@ def verify():
     return "Hello world", 200
 
 # word 
-greetings = ["hi", "hei", "hai", "hello", "hy", "oi"]
+greetings = ['hi', 'hei', 'hai', 'hello', 'hy', 'oi']
 
 @app.route('/', methods=['POST'])
 def webhook():

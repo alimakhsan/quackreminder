@@ -26,7 +26,7 @@ def webhook():
     data = request.get_json()
 
     #words
-    greetings = ['hi', 'hei', 'hai', 'hello', 'hy', 'oi']
+    greetings = ["hi", "hei", "hai", "hello", "hy", "oi"]
   
     try:
         payload = request.get_data()

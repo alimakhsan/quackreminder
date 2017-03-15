@@ -44,6 +44,8 @@ def webhook():
                         send_message(sender_id, "Hi there!")
                     elif 'main' in message_text.lower():
                         send_two_button(sender_id, "ayo gan!", "main sekarang", "main besok")
+                    elif 'dota' in message_text.lower():
+                        send_message(sender_id, "inget skripsi gan")
                     else:
                         send_message(sender_id, "sorry i didn't know")
 

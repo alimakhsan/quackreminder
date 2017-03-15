@@ -33,12 +33,11 @@ def webhook():
         sender, message = messaging_events(payload)
 
         #greetings
-        #if any(greeting() == message.lower() for greeting in greetings):
-        #    send_text_message(sender, "Hi there!")
-        if message == 'hi':
-            send_text_message(sender, "hi tooooooooo")
+        if any(greeting() == message.lower() for greeting in greetings):
+            send_text_message(sender, "Hi there!")
+
         #help
-        elif message.lower() == 'help':
+        elif message.lower() == "help":
             send_button_template_message(sender, "What can I help you?",
                 [
                     generate_button(

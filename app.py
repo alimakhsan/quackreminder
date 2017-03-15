@@ -33,11 +33,11 @@ def webhook():
         sender, message = messaging_events(payload)
 
         #greetings
-        if any(greeting == message.lower() for greeting in greetings):
+        if any(greeting() == message.lower() for greeting in greetings):
             send_text_message(sender, "Hi there!")
 
         #help
-        if message == "help":
+        elif message == "help":
             send_text_message(sender , "You can choose topic you would like to learn and practice from the menu on left. For more information you can drop us a message and we will reply back to you shortly. ")
 
         #show examples
@@ -52,7 +52,7 @@ def webhook():
         #handle task 9
         #handle task 10
 
-        if message == "topics_to_learn":
+        elif message == "topics_to_learn":
             send_replies(
                 sender, 
                 "Select the topic you want to learn? 1.) Rational Numbers <br/> 2.) Linear Equation in One variable /n 3.) Understanding Quadrilaterals",
@@ -84,6 +84,9 @@ def webhook():
                     quick_reply(
                         "more",
                         "BT")])
+
+        else:
+            send_text_message(sender, "Sorry I'm just a little ducky")
             
     except: 
         pass        

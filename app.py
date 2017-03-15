@@ -43,7 +43,7 @@ def webhook():
 
                     if 'show' in s.lower():
                         send_message(sender_id, "Here's your reminder")
-                        three_button(sender_id, "Meeting", "Tomorrow at 8 am", "mark as done", "reschedule", "delete")
+                        three_generic(sender_id, "Meeting", "Tomorrow at 8 am", "mark as done", "reschedule", "delete")
                     elif 'main' in s.lower():
                         two_button(sender_id, "ayo gan!", "main sekarang", "main besok")
                     elif 'dota' in s.lower():

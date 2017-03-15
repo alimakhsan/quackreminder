@@ -40,30 +40,29 @@ def webhook():
                     recipient_id = messaging_event["recipient"]["id"]  # the recipient's ID, which should be your page's facebook ID
                     message_text = messaging_event["message"]["text"]  # the message's text
 
-                    if 'hi' in message_text.lower():
-                        send_message(sender_id, "Hi there!")
+                    if 'show' && ('reminder' || 'schedule') in message_text.lower():
+                        send_message(sender_id, "Here's your reminder")
+                        three_button(sender_id, "Meeting", "Tomorrow at 8 am", "mark as done", "reschedule", "delete")
                     elif 'main' in message_text.lower():
-                        send_two_button(sender_id, "ayo gan!", "main sekarang", "main besok")
+                        two_button(sender_id, "ayo gan!", "main sekarang", "main besok")
                     elif 'dota' in message_text.lower():
                         send_message(sender_id, "inget skripsi gan")
                     else:
                         send_message(sender_id, "sorry i didn't know")
 
-                if messaging_event.get("delivery"):  # delivery confirmation
-                    pass
+                #if messaging_event.get("delivery"):  # delivery confirmation
+                #    pass
 
-                if messaging_event.get("optin"):  # optin confirmation
-                    pass
+                #if messaging_event.get("optin"):  # optin confirmation
+                #    pass
 
-                if messaging_event.get("postback"):  # user clicked/tapped "postback" button in earlier message
-                    pass
+                #if messaging_event.get("postback"):  # user clicked/tapped "postback" button in earlier message
+                #    pass
 
     return "ok", 200
 
 
 def send_message(recipient_id, message_text):
-
-    log("sending message to {recipient}: {text}".format(recipient=recipient_id, text=message_text))
 
     params = {
         "access_token": os.environ["PAGE_ACCESS_TOKEN"]
@@ -80,14 +79,8 @@ def send_message(recipient_id, message_text):
         }
     })
     r = requests.post("https://graph.facebook.com/v2.6/me/messages", params=params, headers=headers, data=data)
-    if r.status_code != 200:
-        log(r.status_code)
-        log(r.text)
 
-
-def send_two_button(recipient_id, message_text, button1, button2):
-
-    log("sending message to {recipient}: {text}".format(recipient=recipient_id, text=message_text))
+def generic_no_button(recipient_id, message_text):
 
     params = {
         "access_token": os.environ["PAGE_ACCESS_TOKEN"]
@@ -109,22 +102,198 @@ def send_two_button(recipient_id, message_text, button1, button2):
                     {
                         "type":"postback",
                         "title": button1,
-                        "payload":"USER_DEFINED_PAYLOAD"
-                    },
-                    {
-                        "type":"postback",
-                        "title": button2,
-                        "payload":"USER_DEFINED_PAYLOAD"
+                        "payload": None
                     }
                 ]}
             }
         }
     })
     r = requests.post("https://graph.facebook.com/v2.6/me/messages", params=params, headers=headers, data=data)
-    if r.status_code != 200:
-        log(r.status_code)
-        log(r.text)
 
+def one_button(recipient_id, message_text, button1):
+
+    params = {
+        "access_token": os.environ["PAGE_ACCESS_TOKEN"]
+    }
+    headers = {
+        "Content-Type": "application/json"
+    }
+    data = json.dumps({
+        "recipient": {
+            "id": recipient_id
+        },
+        "message": {
+            "attachment":{
+            "type":"template",
+                "payload":{
+                "template_type":"button",
+                "text":message_text,
+                "buttons":[
+                    {
+                        "type":"postback",
+                        "title": button1,
+                        "payload": None
+                    }
+                ]}
+            }
+        }
+    })
+    r = requests.post("https://graph.facebook.com/v2.6/me/messages", params=params, headers=headers, data=data)
+
+def two_button(recipient_id, message_text, button1, button2):
+
+    params = {
+        "access_token": os.environ["PAGE_ACCESS_TOKEN"]
+    }
+    headers = {
+        "Content-Type": "application/json"
+    }
+    data = json.dumps({
+        "recipient": {
+            "id": recipient_id
+        },
+        "message": {
+            "attachment":{
+            "type":"template",
+                "payload":{
+                "template_type":"button",
+                "text":message_text,
+                "buttons":[
+                    {
+                        "type":"postback",
+                        "title": button1,
+                        "payload": None
+                    },
+                    {
+                        "type":"postback",
+                        "title": button2,
+                        "payload": None
+                    }
+                ]}
+            }
+        }
+    })
+    r = requests.post("https://graph.facebook.com/v2.6/me/messages", params=params, headers=headers, data=data)
+
+def three_button(recipient_id, message_text, button1, button2, button3):
+
+    params = {
+        "access_token": os.environ["PAGE_ACCESS_TOKEN"]
+    }
+    headers = {
+        "Content-Type": "application/json"
+    }
+    data = json.dumps({
+        "recipient": {
+            "id": recipient_id
+        },
+        "message": {
+            "attachment":{
+            "type":"template",
+                "payload":{
+                "template_type":"button",
+                "text":message_text,
+                "buttons":[
+                    {
+                        "type":"postback",
+                        "title": button1,
+                        "payload": None
+                    },
+                    {
+                        "type":"postback",
+                        "title": button2,
+                        "payload": None
+                    },
+                    {
+                        "type":"postback",
+                        "title": button3,
+                        "payload": None
+                    }
+                ]}
+            }
+        }
+    })
+    r = requests.post("https://graph.facebook.com/v2.6/me/messages", params=params, headers=headers, data=data)
+        
+def two_generic(recipient_id, title, subtitle, button1, button2):
+
+    params = {
+        "access_token": os.environ["PAGE_ACCESS_TOKEN"]
+    }
+    headers = {
+        "Content-Type": "application/json"
+    }
+    data = json.dumps({
+        "recipient": {
+            "id": recipient_id
+        },
+        "message": {
+            "attachment":{
+            "type":"template",
+                "payload":{
+                "template_type":"generic",
+                "elements":[
+                    {
+                    "title":title,
+                    "subtitle": subtitle,
+                    "buttons":[
+                        {
+                            "type":"postback",
+                            "title": button1,
+                            "payload": None
+                        },{
+                            "type":"postback",
+                            "title": button2,
+                            "payload": None
+                        }              
+                    ]}
+                ]}
+            }   
+        }
+    })
+    r = requests.post("https://graph.facebook.com/v2.6/me/messages", params=params, headers=headers, data=data)
+
+def three_generic(recipient_id, title, subtitle, button1, button2, button3):
+
+    params = {
+        "access_token": os.environ["PAGE_ACCESS_TOKEN"]
+    }
+    headers = {
+        "Content-Type": "application/json"
+    }
+    data = json.dumps({
+        "recipient": {
+            "id": recipient_id
+        },
+        "message": {
+            "attachment":{
+            "type":"template",
+                "payload":{
+                "template_type":"generic",
+                "elements":[
+                    {
+                    "title":title,
+                    "subtitle": subtitle,
+                    "buttons":[
+                        {
+                            "type":"postback",
+                            "title": button1,
+                            "payload": None
+                        },{
+                            "type":"postback",
+                            "title": button2,
+                            "payload": None
+                        },{
+                            "type":"postback",
+                            "title": button3,
+                            "payload": None
+                        }              
+                    ]}
+                ]}
+            }   
+        }
+    })
+    r = requests.post("https://graph.facebook.com/v2.6/me/messages", params=params, headers=headers, data=data)
 
 def log(message):  # simple wrapper for logging to stdout on heroku
     print str(message)

@@ -1,6 +1,7 @@
 import os
 import sys
 import json
+import string
 
 import requests
 from flask import Flask, request
@@ -26,18 +27,23 @@ def webhook():
     data = request.get_json()
 
     #words
-    greetings = ["hi", "hei", "hai", "hello", "hy", "oi"]
+    greetings = ['hi', 'hei', 'hai', 'hello', 'hy', 'oi']
   
     try:
         payload = request.get_data()
         sender, message = messaging_events(payload)
 
         #greetings
+        #if any(greeting() == message.lower() for greeting in greetings):
+        #    send_text_message(sender, "Hi there!")
+        if message.lower() == 'hi':
+            send_text_message(sender, "hi tooooooooo")
+
         if any(greeting() == message.lower() for greeting in greetings):
             send_text_message(sender, "Hi there!")
 
         #help
-        elif message.lower() == "help":
+        if message.lower() == 'help':
             send_button_template_message(sender, "What can I help you?",
                 [
                     generate_button(
@@ -58,7 +64,7 @@ def webhook():
         #handle task 8
         #handle task 9
         #handle task 10
-        else:
+        if:
             send_text_message(sender, "Sorry I'm just a little ducky")
             
     except: 

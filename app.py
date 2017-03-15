@@ -22,10 +22,11 @@ def verify():
 
     return "Hello world", 200
 
+@app.route('/', methods=['POST'])
+
 # word 
 greetings = ['hi', 'hei', 'hai', 'hello', 'hy', 'oi']
 
-@app.route('/', methods=['POST'])
 def webhook():
     data = request.get_json()
   
@@ -39,7 +40,7 @@ def webhook():
 
         #help
         elif message.lower() == "help":
-            send_replies(sender , "What can I help you?",
+            send_replies(sender, "What can I help you?",
                 [
                     generate_button(
                         "show me examples"

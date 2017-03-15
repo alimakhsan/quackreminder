@@ -41,7 +41,7 @@ def webhook():
                     message_text = messaging_event["message"]["text"]  # the message's text
                     s = message_text
 
-                    if 'show' in s.lower() and 'reminder' in s.lower() or 'schedule' in s.lower():
+                    if 'show' in s.lower():
                         send_message(sender_id, "Here's your reminder")
                         three_button(sender_id, "Meeting", "Tomorrow at 8 am", "mark as done", "reschedule", "delete")
                     elif 'main' in s.lower():

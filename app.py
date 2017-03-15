@@ -40,9 +40,9 @@ def webhook():
                     recipient_id = messaging_event["recipient"]["id"]  # the recipient's ID, which should be your page's facebook ID
                     message_text = messaging_event["message"]["text"]  # the message's text
 
-                    if "hi" in message_text.lower():
+                    if 'hi' in message_text.lower():
                         send_message(sender_id, "Hi there!")
-                    elif "main" in message_text.lower():
+                    elif 'main' in message_text.lower():
                         send_two_button(sender_id, "ayo gan!", "main sekarang", "main besok")
                     else:
                         send_message(sender_id, "sorry i didn't know")

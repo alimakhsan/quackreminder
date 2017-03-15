@@ -21,17 +21,37 @@ def verify():
 
     return "Hello world", 200
 
+# word 
+greeting = ["hi", "hei", "hai", "hello", "hy", "oi"]
 
 @app.route('/', methods=['POST'])
 def webhook():
     data = request.get_json()
   
-    
     try:
         payload = request.get_data()
         sender, message = messaging_events(payload)
+
+        #greetings
+        if any(greeting() for greeting in message.lower()):
+            send_text_message(sender, "Hi there!")
+
+        #help
         if message == "help":
             send_text_message(sender , "You can choose topic you would like to learn and practice from the menu on left. For more information you can drop us a message and we will reply back to you shortly. ")
+
+        #show examples
+        #handle task 1    
+        #handle task 2
+        #handle task 3
+        #handle task 4
+        #handle task 5
+        #handle task 6
+        #handle task 7
+        #handle task 8
+        #handle task 9
+        #handle task 10
+
         if message == "topics_to_learn":
             send_replies(
                 sender, 

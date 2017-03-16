@@ -32,51 +32,56 @@ def webhook():
     greetings = ['hi', 'hei', 'hai', 'hello', 'hy', 'oi']
 
     get_message(data)
+
     payload = request.get_data()
     sender, message = messaging_events(payload)
 
-    #greetings
-    #if any(greeting() == message.lower() for greeting in greetings):
-    #    send_text_message(sender, "Hi there!")
+    try:
+        #greetings
+        #if any(greeting() == message.lower() for greeting in greetings):
+        #    send_text_message(sender, "Hi there!")
 
-    if message.lower() == 'hi':
-        send_text_message(sender, "hi tooooooooo")
+        if message.lower() == 'hi':
+            send_text_message(sender, "hi tooooooooo")
 
-    elif message == "Hola":
-        send_text_message(sender, "hola tooooooooo")
+        elif message == "Hola":
+            send_text_message(sender, "hola tooooooooo")
 
-    elif message == "muah":
-        send_text_message(sender, "kiss")
+        elif message == "muah":
+            send_text_message(sender, "kiss")
 
-    elif any(greeting() == message.lower() for greeting in greetings):
-        send_text_message(sender, "Hi there!")
+        elif any(greeting() == message.lower() for greeting in greetings):
+            send_text_message(sender, "Hi there!")
 
-    #help
-    elif message.lower() == 'help':
-        send_replies(
-            sender, 
-            "What can I help you?",
-            [
-                quick_reply(
-                    "show me examples",
-                    "show me examples"),
-                quick_reply(
-                    "my reminders",
-                    "my reminders")
-            ])
-    #show examples
-    #handle task 1    
-    #handle task 2
-    #handle task 3
-    #handle task 4
-    #handle task 5
-    #handle task 6
-    #handle task 7
-    #handle task 8
-    #handle task 9
-    #handle task 10
-    else:
-        send_text_message(sender, "Sorry I'm just a little ducky")
+        #help
+        elif message.lower() == 'help':
+            send_replies(
+                sender, 
+                "What can I help you?",
+                [
+                    quick_reply(
+                        "show me examples",
+                        "show me examples"),
+                    quick_reply(
+                        "my reminders",
+                        "my reminders")
+                ])
+        #show examples
+        #handle task 1    
+        #handle task 2
+        #handle task 3
+        #handle task 4
+        #handle task 5
+        #handle task 6
+        #handle task 7
+        #handle task 8
+        #handle task 9
+        #handle task 10
+        else:
+            send_text_message(sender, "Sorry I'm just a little ducky")
+
+    except:
+        pass
 
     return "ok"
 

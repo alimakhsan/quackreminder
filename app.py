@@ -42,15 +42,6 @@ def webhook():
         if any(greeting == message.lower() for greeting in greetings):
             send_text_message(sender, "Hi there!")
 
-        #if message.lower() == 'hi':
-        #   send_text_message(sender, "hi tooooooooo")
-
-        elif message == "Hola":
-            send_text_message(sender, "hola tooooooooo")
-
-        elif message == "muah":
-            send_text_message(sender, "kiss")
-
         #help
         elif 'help' in message.lower():
             send_replies(
@@ -66,10 +57,25 @@ def webhook():
                 ])
 
         #show examples
-        #elif 'show' in message.lower():
 
+        #handle task 1   
+        elif 'meeting' in message.lower():
+            send_button_template_message(
+                sender,
+                "Ok. I will remind you to go to meeting tomorrow at 8 pm",
+                [
+                    generate_button(
+                        "reschedule",
+                        "reschedule",
+                        "text",
+                        None),
+                    generate_button(
+                        "show my reminders",
+                        "show my reminders",
+                        "text",
+                        None)
+                ])
 
-        #handle task 1    
         #handle task 2
         #handle task 3
         #handle task 4

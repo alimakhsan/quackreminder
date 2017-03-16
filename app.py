@@ -43,14 +43,14 @@ def webhook():
     if message.lower() == 'hi':
         send_text_message(sender, "hi tooooooooo")
 
-    elif message == "Hola":
+    elif message.lower() == "Hola":
         send_text_message(sender, "hola tooooooooo")
 
-    elif message == "muah":
+    elif message.lower() == "muah":
         send_text_message(sender, "kiss")
 
     #help
-    elif 'help' in message.lower():
+    elif message.lower() == 'help':
         send_replies(
             sender, 
             "What can I help you?",
@@ -64,24 +64,23 @@ def webhook():
             ])
 
     #show examples
-    elif 'show' in message.lower():
-        if 'example' in message.lower():
-            send_carasol_items(
-                sender,
-                [
-                    generate_carasol_items(
-                        "You can say",
-                        None,
-                        "Buy eggs at 8 am",
-                        None,
-                        False),
-                    generate_carasol_items(
-                        "You can say",
-                        None,
-                        "Do exercise in 10 minutes",
-                        None,
-                        False),
-                ])                
+    elif message.lower() == 'show':
+        send_carasol_items(
+            sender,
+            [
+                generate_carasol_items(
+                    "You can say",
+                    None,
+                    "Buy eggs at 8 am",
+                    None,
+                    False),
+                generate_carasol_items(
+                    "You can say",
+                    None,
+                    "Do exercise in 10 minutes",
+                    None,
+                    False),
+            ])                
 
     #handle task 1    
     #handle task 2

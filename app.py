@@ -58,7 +58,7 @@ def webhook():
                 ])
 
         #show examples
-        elif 'show' in message.lower() and any(example == message.lower() for example in examples):
+        elif 'example' in message.lower():
             send_carousel_items(
                 sender,
                 [

@@ -39,11 +39,11 @@ def webhook():
         sender, message = messaging_events(payload)
 
         #greetings
-        #if any(greeting() == message.lower() for greeting in greetings):
-        #    send_text_message(sender, "Hi there!")
+        if any(greeting == message.lower() for greeting in greetings):
+            send_text_message(sender, "Hi there!")
 
-        if message.lower() == 'hi':
-            send_text_message(sender, "hi tooooooooo")
+        #if message.lower() == 'hi':
+        #   send_text_message(sender, "hi tooooooooo")
 
         elif message == "Hola":
             send_text_message(sender, "hola tooooooooo")
@@ -52,7 +52,7 @@ def webhook():
             send_text_message(sender, "kiss")
 
         #help
-        elif message.lower() == 'help':
+        elif 'help' in message.lower():
             send_replies(
                 sender, 
                 "What can I help you?",
@@ -64,7 +64,11 @@ def webhook():
                         "my reminders",
                         "my reminders")
                 ])
+
         #show examples
+        #elif 'show' in message.lower():
+
+
         #handle task 1    
         #handle task 2
         #handle task 3

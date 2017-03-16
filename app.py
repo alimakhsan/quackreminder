@@ -28,48 +28,53 @@ def verify():
 def webhook():
     data = request.get_json()
   
-    if data["object"] == "page":
-        for entry in data["entry"]:
+    for entry in data["entry"]:
+        for messaging_event in entry["messaging"]:
 
-            payload = request.get_data()
-            sender, message = messaging_events(payload)
+            if messaging_event.get("message"):  # someone sent us a message
 
-            #greetings
-            #if any(greeting() == message.lower() for greeting in greetings):
-            #    send_text_message(sender, "Hi there!")
-            if message.lower() == 'hi':
-                send_text_message(sender, "hi tooooooooo")
+                sender = messaging_event["sender"]["id"]        # the facebook ID of the person sending you the message
+                message = messaging_event["message"]["text"]
 
-            elif message == "Hola":
-                send_text_message(sender, "hola tooooooooo")
+                #payload = request.get_data()
+                #sender, message = messaging_events(payload)
 
-            elif any(greeting() == message.lower() for greeting in greetings):
-                send_text_message(sender, "Hi there!")
+                #greetings
+                #if any(greeting() == message.lower() for greeting in greetings):
+                #    send_text_message(sender, "Hi there!")
+                if message.lower() == 'hi':
+                    send_text_message(sender, "hi tooooooooo")
 
-            #help
-            elif message.lower() == 'help':
-                send_button_template_message(sender, "What can I help you?",
-                    [
-                        generate_button(
-                            "show me examples"
-                            ),
-                        generate_button(
-                            "show my reminders"
-                            )
-                    ])
-            #show examples
-            #handle task 1    
-            #handle task 2
-            #handle task 3
-            #handle task 4
-            #handle task 5
-            #handle task 6
-            #handle task 7
-            #handle task 8
-            #handle task 9
-            #handle task 10
-            else:
-                send_text_message(sender, "Sorry I'm just a little ducky")
+                elif message == "Hola":
+                    send_text_message(sender, "hola tooooooooo")
+
+                elif any(greeting() == message.lower() for greeting in greetings):
+                    send_text_message(sender, "Hi there!")
+
+                #help
+                elif message.lower() == 'help':
+                    send_button_template_message(sender, "What can I help you?",
+                        [
+                            generate_button(
+                                "show me examples"
+                                ),
+                            generate_button(
+                                "show my reminders"
+                                )
+                        ])
+                #show examples
+                #handle task 1    
+                #handle task 2
+                #handle task 3
+                #handle task 4
+                #handle task 5
+                #handle task 6
+                #handle task 7
+                #handle task 8
+                #handle task 9
+                #handle task 10
+                else:
+                    send_text_message(sender, "Sorry I'm just a little ducky")
         
     return "ok", 200
 

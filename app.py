@@ -29,48 +29,53 @@ def webhook():
 
     data = request.get_json()
   
-    payload = request.get_data()
-    sender, message = messaging_events(payload)
+    try:
+        payload = request.get_data()
+        sender, message = messaging_events(payload)
 
-    #greetings
-    #if any(greeting() == message.lower() for greeting in greetings):
-    #    send_text_message(sender, "Hi there!")
+        #greetings
+        #if any(greeting() == message.lower() for greeting in greetings):
+        #    send_text_message(sender, "Hi there!")
 
-    if message.lower() == 'hi':
-        send_text_message(sender, "hi tooooooooo")
+        if message.lower() == 'hi':
+            send_text_message(sender, "hi tooooooooo")
 
-    elif message == "Hola":
-        send_text_message(sender, "hola tooooooooo")
+        if message == "Hola":
+            send_text_message(sender, "hola tooooooooo")
 
-    elif any(greeting() == message.lower() for greeting in greetings):
-        send_text_message(sender, "Hi there!")
+        if any(greeting() == message.lower() for greeting in greetings):
+            send_text_message(sender, "Hi there!")
 
-    #help
-    elif message.lower() == 'help':
-        send_button_template_message(sender, "What can I help you?",
-            [
-                generate_button(
-                    "show me examples"
-                    ),
-                generate_button(
-                    "show my reminders"
-                    )
-            ])
-    #show examples
-    #handle task 1    
-    #handle task 2
-    #handle task 3
-    #handle task 4
-    #handle task 5
-    #handle task 6
-    #handle task 7
-    #handle task 8
-    #handle task 9
-    #handle task 10
+        #help
+        if message.lower() == 'help':
+            send_button_template_message(sender, "What can I help you?",
+                [
+                    generate_button(
+                        "show me examples"
+                        ),
+                    generate_button(
+                        "show my reminders"
+                        )
+                ])
+        #show examples
+        #handle task 1    
+        #handle task 2
+        #handle task 3
+        #handle task 4
+        #handle task 5
+        #handle task 6
+        #handle task 7
+        #handle task 8
+        #handle task 9
+        #handle task 10
+        
+    except:
+        pass
+
     else:
         send_text_message(sender, "Sorry I'm just a little ducky")
-    
-    return "ok", 200
+
+    return "ok"
 
 def log(message):  # simple wrapper for logging to stdout on heroku
     print str(message)

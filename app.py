@@ -53,20 +53,16 @@ def webhook():
 
     #help
     elif message.lower() == 'help':
-        send_button_template_message(sender, "What can I help you?",
+        send_replies(
+            sender, 
+            "What can I help you?",
             [
-                generate_button(
+                quick_reply(
                     "show me examples",
-                    None,
-                    "text",
-                    None
-                    ),
-                generate_button(
-                    "show my reminders",
-                    None,
-                    "text",
-                    None
-                    )
+                    "show me examples"),
+                quick_reply(
+                    "my reminders",
+                    "my reminders")
             ])
     #show examples
     #handle task 1    

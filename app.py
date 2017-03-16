@@ -31,12 +31,13 @@ def webhook():
     #words
     greetings = ['hi', 'hei', 'hai', 'hello', 'hy', 'oi']
 
-    get_message(data)
-
-    payload = request.get_data()
-    sender, message = messaging_events(payload)
-
     try:
+
+        get_message(data)
+
+        payload = request.get_data()
+        sender, message = messaging_events(payload)
+
         #greetings
         #if any(greeting() == message.lower() for greeting in greetings):
         #    send_text_message(sender, "Hi there!")

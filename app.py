@@ -28,55 +28,56 @@ def verify():
 def webhook():
 
     data = request.get_json()
+
+    get_message(data)
   
-    if data["object"] == "page":
+    try:
+        payload = request.get_data()
+        sender, message = messaging_events(payload)
 
-        for entry in data["entry"]:
-            for messaging_event in entry["messaging"]:
+        #greetings
+        #if any(greeting() == message.lower() for greeting in greetings):
+        #    send_text_message(sender, "Hi there!")
 
-                if messaging_event.get("message"):  # someone sent us a message
+        if message.lower() == 'hi':
+            send_text_message(sender, "hi tooooooooo")
 
-                    sender_id = messaging_event["sender"]["id"]        # the facebook ID of the person sending you the message
-                    recipient_id = messaging_event["recipient"]["id"]  # the recipient's ID, which should be your page's facebook ID
-                    message_text = messaging_event["message"]["text"]  # the message's text
+        elif message == "Hola":
+            send_text_message(sender, "hola tooooooooo")
 
-                    #greetings
-                    #if any(greeting() == message.lower() for greeting in greetings):
-                    #    send_text_message(sender, "Hi there!")
+        elif message == "muah":
+            send_text_message(sender, "kiss")
 
-                    if message_text.lower() == 'hi':
-                        send_text_message(sender, "hi tooooooooo")
+        elif any(greeting() == message.lower() for greeting in greetings):
+            send_text_message(sender, "Hi there!")
 
-                    elif message_text == "Hola":
-                        send_text_message(sender, "hola tooooooooo")
-
-                    elif any(greeting() == message_text.lower() for greeting in greetings):
-                        send_text_message(sender, "Hi there!")
-
-                    #help
-                    elif message_text.lower() == 'help':
-                        send_button_template_message(sender, "What can I help you?",
-                            [
-                                generate_button(
-                                    "show me examples"
-                                    ),
-                                generate_button(
-                                    "show my reminders"
-                                    )
-                            ])
-                    #show examples
-                    #handle task 1    
-                    #handle task 2
-                    #handle task 3
-                    #handle task 4
-                    #handle task 5
-                    #handle task 6
-                    #handle task 7
-                    #handle task 8
-                    #handle task 9
-                    #handle task 10
-                    else:
-                        send_text_message(sender, "Sorry I'm just a little ducky")
+        #help
+        elif message.lower() == 'help':
+            send_button_template_message(sender, "What can I help you?",
+                [
+                    generate_button(
+                        "show me examples"
+                        ),
+                    generate_button(
+                        "show my reminders"
+                        )
+                ])
+        #show examples
+        #handle task 1    
+        #handle task 2
+        #handle task 3
+        #handle task 4
+        #handle task 5
+        #handle task 6
+        #handle task 7
+        #handle task 8
+        #handle task 9
+        #handle task 10
+        else:
+            send_text_message(sender, "Sorry I'm just a little ducky")
+    
+    except:
+        pass
 
     return "ok"
 

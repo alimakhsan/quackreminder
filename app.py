@@ -10,6 +10,8 @@ import traceback
 import random
 app = Flask(__name__)
 
+#words
+greetings = ['hi', 'hei', 'hai', 'hello', 'hy', 'oi']
 
 @app.route('/', methods=['GET'])
 def verify():
@@ -25,9 +27,6 @@ def verify():
 @app.route('/', methods=['POST'])
 def webhook():
     data = request.get_json()
-
-    #words
-    greetings = ['hi', 'hei', 'hai', 'hello', 'hy', 'oi']
   
     try:
         payload = request.get_data()
@@ -39,11 +38,14 @@ def webhook():
         if message.lower() == 'hi':
             send_text_message(sender, "hi tooooooooo")
 
-        if any(greeting() == message.lower() for greeting in greetings):
+        elif message == "Hola":
+            send_text_message(sender, "hola tooooooooo")
+
+        elif any(greeting() == message.lower() for greeting in greetings):
             send_text_message(sender, "Hi there!")
 
         #help
-        if message.lower() == 'help':
+        elif message.lower() == 'help':
             send_button_template_message(sender, "What can I help you?",
                 [
                     generate_button(
@@ -64,7 +66,7 @@ def webhook():
         #handle task 8
         #handle task 9
         #handle task 10
-        if:
+        else:
             send_text_message(sender, "Sorry I'm just a little ducky")
             
     except: 

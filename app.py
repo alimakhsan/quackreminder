@@ -38,6 +38,8 @@ def webhook():
         payload = request.get_data()
         sender, message = messaging_events(payload)
 
+        message_length = message.len()
+
         #greetings
         if any(greeting == message.lower() for greeting in greetings):
             send_text_message(sender, "Hi there!")
@@ -62,7 +64,7 @@ def webhook():
         elif 'meeting' in message.lower():
             send_button_template_message(
                 sender,
-                "Ok. I will remind you to go to meeting tomorrow at 8 pm",
+                "Ok. I will remind you " + message.lower(),
                 [
                     generate_button(
                         "reschedule",

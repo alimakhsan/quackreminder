@@ -10,8 +10,7 @@ import traceback
 import random
 app = Flask(__name__)
 
-#words
-greetings = ['hi', 'hei', 'hai', 'hello', 'hy', 'oi']
+
 
 @app.route('/', methods=['GET'])
 def verify():
@@ -29,55 +28,59 @@ def webhook():
 
     data = request.get_json()
 
+    #words
+    greetings = ['hi', 'hei', 'hai', 'hello', 'hy', 'oi']
+
     get_message(data)
-  
-    try:
-        payload = request.get_data()
-        sender, message = messaging_events(payload)
+    payload = request.get_data()
+    sender, message = messaging_events(payload)
 
-        #greetings
-        #if any(greeting() == message.lower() for greeting in greetings):
-        #    send_text_message(sender, "Hi there!")
+    #greetings
+    #if any(greeting() == message.lower() for greeting in greetings):
+    #    send_text_message(sender, "Hi there!")
 
-        if message.lower() == 'hi':
-            send_text_message(sender, "hi tooooooooo")
+    if message.lower() == 'hi':
+        send_text_message(sender, "hi tooooooooo")
 
-        elif message == "Hola":
-            send_text_message(sender, "hola tooooooooo")
+    elif message == "Hola":
+        send_text_message(sender, "hola tooooooooo")
 
-        elif message == "muah":
-            send_text_message(sender, "kiss")
+    elif message == "muah":
+        send_text_message(sender, "kiss")
 
-        elif any(greeting() == message.lower() for greeting in greetings):
-            send_text_message(sender, "Hi there!")
+    elif any(greeting() == message.lower() for greeting in greetings):
+        send_text_message(sender, "Hi there!")
 
-        #help
-        elif message.lower() == 'help':
-            send_button_template_message(sender, "What can I help you?",
-                [
-                    generate_button(
-                        "show me examples"
-                        ),
-                    generate_button(
-                        "show my reminders"
-                        )
-                ])
-        #show examples
-        #handle task 1    
-        #handle task 2
-        #handle task 3
-        #handle task 4
-        #handle task 5
-        #handle task 6
-        #handle task 7
-        #handle task 8
-        #handle task 9
-        #handle task 10
-        else:
-            send_text_message(sender, "Sorry I'm just a little ducky")
-    
-    except:
-        pass
+    #help
+    elif message.lower() == 'help':
+        send_button_template_message(sender, "What can I help you?",
+            [
+                generate_button(
+                    "show me examples",
+                    None,
+                    "text",
+                    None
+                    ),
+                generate_button(
+                    "show my reminders",
+                    None,
+                    "text",
+                    None
+                    )
+            ])
+    #show examples
+    #handle task 1    
+    #handle task 2
+    #handle task 3
+    #handle task 4
+    #handle task 5
+    #handle task 6
+    #handle task 7
+    #handle task 8
+    #handle task 9
+    #handle task 10
+    else:
+        send_text_message(sender, "Sorry I'm just a little ducky")
 
     return "ok"
 

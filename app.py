@@ -57,23 +57,33 @@ def webhook():
                 ])
 
         #show examples
+        elif 'show' in message.lower():
+            send_carousel_items(
+                sender,
+                [
+                    generate_carousel_items(
+                    "You can say",
+                    "Buy eggs at 10 am"),
+                    generate_carousel_items(
+                    "You can say",
+                    "Do exercise at 6.00"),
+                    generate_carousel_items(
+                    "You can say",
+                    "Call mother in 10 minutes")
+                ])
 
         #handle task 1   
         elif 'meeting' in message.lower():
             send_button_template_message(
                 sender,
-                "Ok. I will remind you " + message.lower(),
+                "Ok. I will remind you to" + message.lower(),
                 [
                     generate_button(
                         "reschedule",
-                        "reschedule",
-                        "text",
-                        None),
+                        "reschedule"),
                     generate_button(
                         "show my reminders",
-                        "show my reminders",
-                        "text",
-                        None)
+                        "show my reminders")
                 ])
 
         #handle task 2

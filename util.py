@@ -85,7 +85,7 @@ def send_image(recipent, item, type="image"):
         )
     print r.text
 
-def send_carasol_items(recipient, items):
+def send_carousel_items(recipient, items):
     r = requests.post(SEND_MESSAGE_URL,
           params={'access_token': token},
           data=json.dumps({
@@ -125,40 +125,27 @@ def send_replies(recipent , text , reply):
         headers={'Content-type': 'application/json'})
     print r.text
 
-def generate_carasol_items(text, image_url, payload = None, showbtns = True):
-    if showbtns:
-        return {
-            "title": text,
-            "image_url": image_url,
-            "buttons": [
-                {
-                    "type": "postback",
-                    "title": "Learn This",
-                    "payload": payload
-                }
-            ]
-        }
-    else:
-        return {
-            "title": text,
-            "image_url": image_url,
-        }
+def generate_carousel_items(text, subtitle):
+    return {
+        "title": text,
+        "subtitle": subtitle
+    }
+
+def generate_carousel_items_buttons(text, subtitle, buttons):
+    return {
+        "title": text,
+        "subtitle": subtitle,
+        "buttons": buttons
+    }
+    
 
 
-
-def generate_button(text, payload=None, type="text", url=None):
-    if type == "url":
-        return {
-            "type": "web_url",
-            "url": url,
-            "title": text
-        }
-    else:
-        return {
-            "type": "postback",
-            "title": text,
-            "payload": payload
-        }
+def generate_button(text, payload=None):
+    return {
+        "type": "postback",
+        "title": text,
+        "payload": payload
+    }
 
 def get_message(data):
   if data["object"] == "page":

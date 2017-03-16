@@ -50,7 +50,7 @@ def webhook():
         send_text_message(sender, "kiss")
 
     #help
-    elif message.lower() == 'help':
+    elif "help" in message.lower():
         send_replies(
             sender, 
             "What can I help you?",

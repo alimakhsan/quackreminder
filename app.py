@@ -51,9 +51,6 @@ def webhook():
         elif message == "muah":
             send_text_message(sender, "kiss")
 
-        elif any(greeting() == message.lower() for greeting in greetings):
-            send_text_message(sender, "Hi there!")
-
         #help
         elif message.lower() == 'help':
             send_replies(

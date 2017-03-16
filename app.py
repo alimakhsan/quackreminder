@@ -170,11 +170,12 @@ def webhook():
         #handle task 8
         #handle task 9
         #handle task 10
-        else:
-            send_text_message(sender, "Sorry I'm just a little ducky")
 
     except:
         pass
+
+    else:
+            send_text_message(sender, "Sorry I'm just a little ducky")
 
     return "ok"
 

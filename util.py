@@ -36,6 +36,7 @@ def get_solution_from_wolfarmAlpha(question):
         response.append(temp)
     return response
 
+# send text message
 def send_text_message(recipient, text):
   """Send the message text to recipient with id recipient.
   """
@@ -50,6 +51,7 @@ def send_text_message(recipient, text):
   if r.status_code != requests.codes.ok:
     print r.text
 
+# send button template message
 def send_button_template_message(recipient, text, buttons):
     r = requests.post(SEND_MESSAGE_URL,
           params={'access_token': token},
@@ -68,6 +70,8 @@ def send_button_template_message(recipient, text, buttons):
           headers={'Content-type': 'application/json'})
     print r.text
 
+# send image
+# i think i don't need this
 def send_image(recipent, item, type="image"):
     r = requests.post(SEND_MESSAGE_URL, params = {'access_token' : token},
             data = json.dumps({
@@ -85,6 +89,9 @@ def send_image(recipent, item, type="image"):
         )
     print r.text
 
+# send carousel item
+# need generate_carasol_items
+# can be use to make a generic template message
 def send_carasol_items(recipient, items):
     r = requests.post(SEND_MESSAGE_URL,
           params={'access_token': token},
@@ -103,6 +110,7 @@ def send_carasol_items(recipient, items):
         headers={'Content-type': 'application/json'})
     print r.text
 
+# make quick reply
 def quick_reply(title, payload=None):
     return {
         "content_type" : "text" , 
@@ -110,6 +118,7 @@ def quick_reply(title, payload=None):
         "payload" : payload
     }  
 
+# send message with quick reply
 def send_replies(recipent , text , reply):
     r = requests.post(SEND_MESSAGE_URL,
           params={'access_token': token},
@@ -125,40 +134,28 @@ def send_replies(recipent , text , reply):
         headers={'Content-type': 'application/json'})
     print r.text
 
-def generate_carasol_items(text, image_url, payload = None, showbtns = True):
+# make a carousel item
+# need generate button
+def generate_carasol_items(text, payload=None, subtitle, button=None, showbtns = True):
     if showbtns:
         return {
-            "title": text,
-            "image_url": image_url,
-            "buttons": [
-                {
-                    "type": "postback",
-                    "title": "Learn This",
-                    "payload": payload
-                }
-            ]
+          "title": text,
+          "subtitle": subtitle,
+          "buttons": button
         }
     else:
         return {
             "title": text,
-            "image_url": image_url,
+            "subtitle": subtitle
         }
 
-
-
-def generate_button(text, payload=None, type="text", url=None):
-    if type == "url":
-        return {
-            "type": "web_url",
-            "url": url,
-            "title": text
-        }
-    else:
-        return {
-            "type": "postback",
-            "title": text,
-            "payload": payload
-        }
+# make a button
+def generate_button(text, payload=None):
+    return {
+        "type": "postback",
+        "title": text,
+        "payload": payload
+    }
 
 def get_message(data):
   if data["object"] == "page":

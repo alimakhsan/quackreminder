@@ -31,55 +31,70 @@ def webhook():
     #words
     greetings = ['hi', 'hei', 'hai', 'hello', 'hy', 'oi']
 
-    try:
+    get_message(data)
 
-        get_message(data)
+    payload = request.get_data()
+    sender, message = messaging_events(payload)
 
-        payload = request.get_data()
-        sender, message = messaging_events(payload)
+    #greetings
+    #if any(greeting() == message.lower() for greeting in greetings):
+    #    send_text_message(sender, "Hi there!")
 
-        #greetings
-        #if any(greeting() == message.lower() for greeting in greetings):
-        #    send_text_message(sender, "Hi there!")
+    if message.lower() == 'hi':
+        send_text_message(sender, "hi tooooooooo")
 
-        if message.lower() == 'hi':
-            send_text_message(sender, "hi tooooooooo")
+    elif message == "Hola":
+        send_text_message(sender, "hola tooooooooo")
 
-        elif message == "Hola":
-            send_text_message(sender, "hola tooooooooo")
+    elif message == "muah":
+        send_text_message(sender, "kiss")
 
-        elif message == "muah":
-            send_text_message(sender, "kiss")
+    #help
+    elif message.lower() == 'help':
+        send_replies(
+            sender, 
+            "What can I help you?",
+            [
+                quick_reply(
+                    "show me examples",
+                    "show me examples"),
+                quick_reply(
+                    "my reminders",
+                    "my reminders")
+            ])
 
-        #help
-        elif message.lower() == 'help':
-            send_replies(
-                sender, 
-                "What can I help you?",
+    #show examples
+    elif 'show' in message.lower():
+        if 'example' in message.lower():
+            send_carasol_items(
+                sender,
                 [
-                    quick_reply(
-                        "show me examples",
-                        "show me examples"),
-                    quick_reply(
-                        "my reminders",
-                        "my reminders")
-                ])
-        #show examples
-        #handle task 1    
-        #handle task 2
-        #handle task 3
-        #handle task 4
-        #handle task 5
-        #handle task 6
-        #handle task 7
-        #handle task 8
-        #handle task 9
-        #handle task 10
-        else:
-            send_text_message(sender, "Sorry I'm just a little ducky")
+                    generate_carasol_items(
+                        "You can say",
+                        None,
+                        "Buy eggs at 8 am",
+                        None,
+                        False),
+                    generate_carasol_items(
+                        "You can say",
+                        None,
+                        "Do exercise in 10 minutes",
+                        None,
+                        False),
+                ])                
 
-    except:
-        pass
+    #handle task 1    
+    #handle task 2
+    #handle task 3
+    #handle task 4
+    #handle task 5
+    #handle task 6
+    #handle task 7
+    #handle task 8
+    #handle task 9
+    #handle task 10
+    else:
+        send_text_message(sender, "Sorry I'm just a little ducky")
 
     return "ok"
 

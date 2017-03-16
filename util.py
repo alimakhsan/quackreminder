@@ -137,8 +137,6 @@ def generate_carousel_items_buttons(text, subtitle, buttons):
         "subtitle": subtitle,
         "buttons": buttons
     }
-    
-
 
 def generate_button(text, payload=None):
     return {

@@ -32,6 +32,7 @@ def webhook():
     greetings = ['hi', 'hei', 'hai', 'hello', 'hy', 'oi']
 
     try:
+
         get_message(data)
 
         payload = request.get_data()
@@ -44,10 +45,10 @@ def webhook():
         if message.lower() == 'hi':
             send_text_message(sender, "hi tooooooooo")
 
-        elif message.lower() == "Hola":
+        elif message == "Hola":
             send_text_message(sender, "hola tooooooooo")
 
-        elif message.lower() == "muah":
+        elif message == "muah":
             send_text_message(sender, "kiss")
 
         #help
@@ -63,26 +64,7 @@ def webhook():
                         "my reminders",
                         "my reminders")
                 ])
-
         #show examples
-        elif message.lower() == 'show':
-            send_carasol_items(
-                sender,
-                [
-                    generate_carasol_items(
-                        "You can say",
-                        None,
-                        "Buy eggs at 8 am",
-                        None,
-                        False),
-                    generate_carasol_items(
-                        "You can say",
-                        None,
-                        "Do exercise in 10 minutes",
-                        None,
-                        False),
-                ])                
-
         #handle task 1    
         #handle task 2
         #handle task 3

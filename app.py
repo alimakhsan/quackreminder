@@ -30,6 +30,7 @@ def webhook():
 
     #words
     greetings = ['hi', 'hei', 'hai', 'hello', 'hy', 'oi']
+    examples = ['example', 'examples']
 
     try:
 
@@ -56,6 +57,22 @@ def webhook():
                         "my reminders")
                 ])
 
+        #show examples
+        elif 'show' in message.lower() and any(example == message.lower() for example in examples):
+            send_carousel_items(
+                sender,
+                [
+                    generate_carousel_items(
+                    "You can say",
+                    "Buy eggs at 10 am"),
+                    generate_carousel_items(
+                    "You can say",
+                    "Do exercise at 6.00"),
+                    generate_carousel_items(
+                    "You can say",
+                    "Call mother in 10 minutes")
+                ])
+
         #handle task 1   
         #handle task 2
         elif 'meeting' in message.lower():
@@ -71,98 +88,7 @@ def webhook():
                         "show my reminders")
                 ])
 
-        #show examples
         #handle task 3
-        elif 'show' in message.lower() and 'example' in message.lower():
-            send_carousel_items(
-                sender,
-                [
-                    generate_carousel_items(
-                    "You can say",
-                    "Buy eggs at 10 am"),
-                    generate_carousel_items(
-                    "You can say",
-                    "Do exercise at 6.00"),
-                    generate_carousel_items(
-                    "You can say",
-                    "Call mother in 10 minutes")
-                ])
-
-        elif 'show' in message.lower() or 'schedule' in message.lower() or 'my reminder' in message.lower():
-        send_carousel_items(
-            sender,
-            [
-                generate_carousel_items_buttons(
-                "Meeting",
-                "Tomorrow, 8:00AM",
-                [
-                    generate_button(
-                        "reschedule",
-                        "reschedule"
-                        ),
-                    generate_button(
-                        "mark as done",
-                        "mark as done"
-                        ),
-                    generate_button(
-                        "delete",
-                        "delete"
-                        )
-                ]),
-                generate_carousel_items_buttons(
-                "Call Andi",
-                "Today, 5:05PM",
-                [
-                    generate_button(
-                        "reschedule",
-                        "reschedule"
-                        ),
-                    generate_button(
-                        "mark as done",
-                        "mark as done"
-                        ),
-                    generate_button(
-                        "delete",
-                        "delete"
-                        )
-                ]),
-                generate_carousel_items_buttons(
-                "Jogging with Budi",
-                "Sun, Mar 26, 6:00AM",
-                [
-                    generate_button(
-                        "reschedule",
-                        "reschedule"
-                        ),
-                    generate_button(
-                        "mark as done",
-                        "mark as done"
-                        ),
-                    generate_button(
-                        "delete",
-                        "delete"
-                        )
-                ]),
-                generate_carousel_items_buttons(
-                "Meet my lecturer",
-                "Tue, Apr 18, 10:00AM",
-                [
-                    generate_button(
-                        "reschedule",
-                        "reschedule"
-                        ),
-                    generate_button(
-                        "mark as done",
-                        "mark as done"
-                        ),
-                    generate_button(
-                        "delete",
-                        "delete"
-                        )
-                ]),
-            ])
-
-
         #handle task 4
         #handle task 5
         #handle task 6
@@ -170,12 +96,11 @@ def webhook():
         #handle task 8
         #handle task 9
         #handle task 10
+        else:
+            send_text_message(sender, "Sorry I'm just a little ducky")
 
     except:
         pass
-
-    else:
-            send_text_message(sender, "Sorry I'm just a little ducky")
 
     return "ok"
 

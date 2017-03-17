@@ -32,12 +32,12 @@ def webhook():
     greetings = ['hi', 'hei', 'hai', 'hello', 'hy', 'oi']
     examples = ['example', 'examples']
 
-    #try:
+    try:
 
-    get_message(data)
+        get_message(data)
 
-        #payload = request.get_data()
-        #sender, message = messaging_events(payload)
+        payload = request.get_data()
+        sender, message = messaging_events(payload)
 
         #greetings
         if any(greeting in message.lower() for greeting in greetings):
@@ -144,8 +144,8 @@ def webhook():
         else:
             send_text_message(sender, "Sorry I'm just a little ducky")
 
-    #except:
-    #    pass
+    except:
+        pass
 
     return "ok"
 

@@ -145,6 +145,19 @@ def generate_button(text, payload=None):
         "payload": payload
     }
 
+def my_reminder_button():
+    return [
+        generate_button(
+            "reschedule",
+            "reschedule"),
+        generate_button(
+            "mark as done",
+            "mark as done"),
+        generate_button(
+            "delete",
+            "delete")
+    ]
+
 def get_message(data):
   if data["object"] == "page":
 

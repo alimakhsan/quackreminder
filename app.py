@@ -26,14 +26,13 @@ def webhook():
 
     data = request.get_json()
 
-    reminder_counter = 0
-    snooze_counter = 0    
-
     #words
     greetings = ['hi', 'hei', 'hai', 'hello', 'hy', 'oi']
     examples = ['example', 'examples']
     dones = ['mark', 'done', 'complete']
     snoozes = ['snooze', 'pending']
+    times = ['am', 'pm']
+    durations = ['d', 'h', 'm', 's', 'day', 'hour', 'min', 'sec']
 
     try:
 
@@ -66,13 +65,13 @@ def webhook():
                 sender,
                 [
                     generate_carousel_items(
-                    "You can say",
+                    "You can say..",
                     "Buy eggs at 10 am"),
                     generate_carousel_items(
-                    "You can say",
+                    "You can say..",
                     "Do exercise at 6.00"),
                     generate_carousel_items(
-                    "You can say",
+                    "You can say..",
                     "Call mother in 10 minutes")
                 ])
 
@@ -110,15 +109,18 @@ def webhook():
             send_carousel_items(
                 sender,
                 [
-                    generate_carousel_items(
-                    "You can say",
-                    "Buy eggs at 10 am"),
-                    generate_carousel_items(
-                    "You can say",
-                    "Do exercise at 6.00"),
-                    generate_carousel_items(
-                    "You can say",
-                    "Call mother in 10 minutes")
+                    generate_carousel_items_buttons(
+                        "Meeting",
+                        "Tomorrow, 8:00AM",
+                        my_reminder_button()),
+                    generate_carousel_items_buttons(
+                        "Call Andi",
+                        "Today, 5:05PM",
+                        my_reminder_button()),
+                    generate_carousel_items_buttons(
+                        "Jogging with Budi",
+                        "Sun, Mar 26, 6:00AM",
+                        my_reminder_button())
                 ])
 
         #handle task 4
@@ -134,10 +136,8 @@ def webhook():
                         "show my reminders",
                         "show my reminders")
                 ])
-            reminder_counter = 1
-
-        #generate task 5
-        elif reminder_counter == 1:
+            
+            #generate task 5
             send_button_template_message(
                 sender,
                 "Hi, you ask me to remind you to call andi",
@@ -152,7 +152,6 @@ def webhook():
                         "my reminders",
                         "my reminders"),
                 ])
-            reminder_counter = 0
 
         #handle task 5
         elif any(snooze in message.lower() for snooze in snoozes):
@@ -173,11 +172,8 @@ def webhook():
                         "1 day",
                         "1 day")
                 ])
-            snooze_counter = 1
-
-        elif snooze_counter == 1:
-            send_text_message(sender, "Ok. I will snooze your reminder to call andi in 2 minutes")
-            snooze_counter = 0
+            if any(duration in message.lower() for duration in durations):
+                send_text_message(sender, "Ok. I will snooze your reminder to call andi in 2 minutes")
 
         #handle task 6
 

@@ -176,6 +176,8 @@ def webhook():
                 send_text_message(sender, "Ok. I will snooze your reminder to call andi in 2 minutes")
 
         #handle task 6
+        elif any(done in message.lower() for done in dones):
+                send_text_message(sender, "Great!")
 
         #handle task 7
 

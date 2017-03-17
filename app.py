@@ -10,8 +10,6 @@ import traceback
 import random
 app = Flask(__name__)
 
-
-
 @app.route('/', methods=['GET'])
 def verify():
     # when the endpoint is registered as a webhook, it must echo back
@@ -28,9 +26,14 @@ def webhook():
 
     data = request.get_json()
 
+    reminder_counter = 0
+    snooze_counter = 0    
+
     #words
     greetings = ['hi', 'hei', 'hai', 'hello', 'hy', 'oi']
     examples = ['example', 'examples']
+    dones = ['mark', 'done', 'complete']
+    snoozes = ['snooze', 'pending']
 
     try:
 
@@ -131,8 +134,50 @@ def webhook():
                         "show my reminders",
                         "show my reminders")
                 ])
+            reminder_counter = 1
+
+        #generate task 5
+        elif reminder_counter == 1:
+            send_button_template_message(
+                sender,
+                "Hi, you ask me to remind you to call andi",
+                [
+                    generate_button(
+                        "mark as done",
+                        "mark as done"),
+                    generate_button(
+                        "snooze",
+                        "snooze")
+                    generate_button(
+                        "my reminders",
+                        "my reminders"),
+                ])
+            reminder_counter = 0
 
         #handle task 5
+        elif any(snooze in message.lower() for snooze in snoozes):
+            send_replies(
+                sender, 
+                "What time do you prefer?",
+                [
+                    quick_reply(
+                        "5 min",
+                        "5 min"),
+                    quick_reply(
+                        "15 min",
+                        "15 min"),
+                    quick_reply(
+                        "1 hour",
+                        "1 hour"),
+                    quick_reply(
+                        "1 day",
+                        "1 day")
+                ])
+            snooze_counter = 1
+
+        elif snooze_counter == 1:
+            send_text_message(sender, "Ok. I will snooze your reminder to call andi in 2 minutes")
+            snooze_counter = 0
 
         #handle task 6
 

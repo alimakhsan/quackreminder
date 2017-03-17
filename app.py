@@ -172,8 +172,6 @@ def webhook():
                         "1 day",
                         "1 day")
                 ])
-            if any(duration in message.lower() for duration in durations):
-                send_text_message(sender, "Ok. I will snooze your reminder to call andi in 2 minutes")
 
         #handle task 6
         elif any(done in message.lower() for done in dones):

@@ -32,15 +32,15 @@ def webhook():
     greetings = ['hi', 'hei', 'hai', 'hello', 'hy', 'oi']
     examples = ['example', 'examples']
 
-    try:
+    #try:
 
-        get_message(data)
+    get_message(data)
 
-        payload = request.get_data()
-        sender, message = messaging_events(payload)
+        #payload = request.get_data()
+        #sender, message = messaging_events(payload)
 
         #greetings
-        if any(greeting == message.lower() for greeting in greetings):
+        if any(greeting in message.lower() for greeting in greetings):
             send_text_message(sender, "Hi there!")
 
         #help
@@ -53,8 +53,8 @@ def webhook():
                         "show me examples",
                         "show me examples"),
                     quick_reply(
-                        "my reminders",
-                        "my reminders")
+                        "show my reminders",
+                        "show my reminders")
                 ])
 
         #show examples
@@ -74,11 +74,25 @@ def webhook():
                 ])
 
         #handle task 1   
-        #handle task 2
-        elif 'meeting' in message.lower():
+        #handle task 8
+        elif 'meet' in message.lower():
             send_button_template_message(
                 sender,
-                "Ok. I will remind you to" + message.lower(),
+                "Ok. I will remind you to " + message.lower(),
+                [
+                    generate_button(
+                        "reschedule",
+                        "reschedule"),
+                    generate_button(
+                        "show my reminders",
+                        "show my reminders")
+                ])
+
+        #handle task 2  
+        elif 'call' in message.lower():
+            send_button_template_message(
+                sender,
+                "Ok. I will remind you to " + message.lower(),
                 [
                     generate_button(
                         "reschedule",
@@ -89,18 +103,49 @@ def webhook():
                 ])
 
         #handle task 3
+        elif 'show' in message.lower():
+            send_carousel_items(
+                sender,
+                [
+                    generate_carousel_items(
+                    "You can say",
+                    "Buy eggs at 10 am"),
+                    generate_carousel_items(
+                    "You can say",
+                    "Do exercise at 6.00"),
+                    generate_carousel_items(
+                    "You can say",
+                    "Call mother in 10 minutes")
+                ])
+
         #handle task 4
+        elif 'jog' in message.lower():
+            send_button_template_message(
+                sender,
+                "Great. I will remind you to " + message.lower(),
+                [
+                    generate_button(
+                        "reschedule",
+                        "reschedule"),
+                    generate_button(
+                        "show my reminders",
+                        "show my reminders")
+                ])
+
         #handle task 5
+
         #handle task 6
+
         #handle task 7
-        #handle task 8
+
         #handle task 9
+
         #handle task 10
         else:
             send_text_message(sender, "Sorry I'm just a little ducky")
 
-    except:
-        pass
+    #except:
+    #    pass
 
     return "ok"
 

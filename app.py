@@ -105,23 +105,23 @@ def webhook():
                 ])
 
         #handle task 3
-        # elif 'show' in message.lower():
-        #     send_carousel_items(
-        #         sender,
-        #         [
-        #             generate_carousel_items_buttons(
-        #                 "Meeting",
-        #                 "Tomorrow, 8:00AM",
-        #                 my_reminder_button()),
-        #             generate_carousel_items_buttons(
-        #                 "Call Andi",
-        #                 "Today, 5:05PM",
-        #                 my_reminder_button()),
-        #             generate_carousel_items_buttons(
-        #                 "Jogging with Budi",
-        #                 "Sun, Mar 26, 6:00AM",
-        #                 my_reminder_button())
-        #         ])
+        elif 'show' in message.lower():
+            send_carousel_items(
+                sender,
+                [
+                    generate_carousel_items_buttons(
+                        "Meeting",
+                        "Tomorrow, 8:00AM",
+                        my_reminder_button()),
+                    generate_carousel_items_buttons(
+                        "Call Andi",
+                        "Today, 5:05PM",
+                        my_reminder_button()),
+                    generate_carousel_items_buttons(
+                        "Jogging with Budi",
+                        "Sun, Mar 26, 6:00AM",
+                        my_reminder_button())
+                ])
 
         #handle task 4
         elif 'jog' in message.lower():

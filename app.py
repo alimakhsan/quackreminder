@@ -138,20 +138,20 @@ def webhook():
                 ])
             
             #generate task 5
-            send_button_template_message(
-                sender,
-                "Hi, you ask me to remind you to call andi",
-                [
-                    generate_button(
-                        "mark as done",
-                        "mark as done"),
-                    generate_button(
-                        "snooze",
-                        "snooze")
-                    generate_button(
-                        "my reminders",
-                        "my reminders"),
-                ])
+            # send_button_template_message(
+            #     sender,
+            #     "Hi, you ask me to remind you to call andi",
+            #     [
+            #         generate_button(
+            #             "mark as done",
+            #             "mark as done"),
+            #         generate_button(
+            #             "snooze",
+            #             "snooze")
+            #         generate_button(
+            #             "my reminders",
+            #             "my reminders"),
+            #     ])
 
         #handle task 5
         elif any(snooze in message.lower() for snooze in snoozes):

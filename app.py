@@ -6,6 +6,7 @@ import string
 import requests
 from flask import Flask, request
 from util import *
+from postgres import *
 import traceback
 import random
 app = Flask(__name__)

@@ -46,14 +46,6 @@ def webhook():
         #greetings
         if any(greeting in message.lower() for greeting in greetings):
             send_text_message(sender, "Hi there!")
-            file = open(“testfile.txt”, ”w”)
-            file.write("Alim")
-            file.close()
-
-
-        elif 'quack' in message.lower():
-            file = open(“testfile.txt”, “r”)  
-            send_text_message(sender, "Hi " + file.read() + "!")  
 
         #help
         elif 'help' in message.lower():

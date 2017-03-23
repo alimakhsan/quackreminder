@@ -1,15 +1,36 @@
 import os
 import sys
 import json
-import string
 
 import requests
 from flask import Flask, request
-from util import *
-from postgres import *
-import traceback
-import random
+from flask.ext.sqlalchemy import SQLAlchemy
+
 app = Flask(__name__)
+app.config['SQLALCHEMY_DATABASE_URI'] = os.environ['DATABASE_URL']
+db = SQLAlchemy(app)
+
+class User(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(80))
+    email = db.Column(db.String(120), unique=True)
+
+    def __init__(self, name, email):
+        self.name = name
+        self.email = email
+
+    def __repr__(self):
+        return '<Name %r>' % self.name
+
+class Status(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    counter = db.Column(db.Integer)
+
+    def __init__(self, counter):
+        self.counter = 0
+
+    def __repr__(self):
+        return self.counter
 
 @app.route('/', methods=['GET'])
 def verify():
@@ -20,182 +41,81 @@ def verify():
             return "Verification token mismatch", 403
         return request.args["hub.challenge"], 200
 
-    return "Hello world", 200
+    db.session.add(Status(0))
+    db.session.commit()
+
+    return "Server working!", 200
+
 
 @app.route('/', methods=['POST'])
 def webhook():
 
+    # endpoint for processing incoming messaging events
+
     data = request.get_json()
+    log(data)  # you may not want to log every incoming message in production, but it's good for testing
 
-    #words
-    greetings = ['hi', 'hei', 'hai', 'hello', 'hy', 'oi']
-    examples = ['example', 'examples']
-    dones = ['mark', 'done', 'complete']
-    snoozes = ['snooze', 'pending']
-    times = ['am', 'pm']
-    durations = ['d', 'h', 'm', 's', 'day', 'hour', 'min', 'sec']
+    if data["object"] == "page":
 
-    #file
+        for entry in data["entry"]:
+            for messaging_event in entry["messaging"]:
 
-    try:
+                if messaging_event.get("message"):  # someone sent us a message
 
-        get_message(data)
+                    sender_id = messaging_event["sender"]["id"]        # the facebook ID of the person sending you the message
+                    recipient_id = messaging_event["recipient"]["id"]  # the recipient's ID, which should be your page's facebook ID
+                    message_text = messaging_event["message"]["text"]  # the message's text
 
-        payload = request.get_data()
-        sender, message = messaging_events(payload)
+                    status = Status.query.get(1)
 
-        #greetings
-        if any(greeting in message.lower() for greeting in greetings):
-            send_text_message(sender, "Hi there!")
+                    log(status.counter)
 
-        #help
-        elif 'help' in message.lower():
-            send_replies(
-                sender, 
-                "What can I help you?",
-                [
-                    quick_reply(
-                        "show me examples",
-                        "show me examples"),
-                    quick_reply(
-                        "show my reminders",
-                        "show my reminders")
-                ])
+                    db.session.query(Status).update({Status.counter: Status.counter + 1})
+                    db.session.commit()
 
-        #show examples
-        elif 'example' in message.lower():
-            send_carousel_items(
-                sender,
-                [
-                    generate_carousel_items(
-                    "You can say..",
-                    "Buy eggs at 10 am"),
-                    generate_carousel_items(
-                    "You can say..",
-                    "Do exercise at 6.00"),
-                    generate_carousel_items(
-                    "You can say..",
-                    "Call mother in 10 minutes")
-                ])
+                    send_message(sender_id, "got it, thanks!")
 
-        #handle task 1   
-        #handle task 8
-        elif 'meet' in message.lower():
-            send_button_template_message(
-                sender,
-                "Ok. I will remind you to " + message.lower(),
-                [
-                    generate_button(
-                        "reschedule",
-                        "reschedule"),
-                    generate_button(
-                        "show my reminders",
-                        "show my reminders")
-                ])
+                if messaging_event.get("delivery"):  # delivery confirmation
+                    pass
 
-        #handle task 2  
-        elif 'call' in message.lower():
-            send_button_template_message(
-                sender,
-                "Ok. I will remind you to " + message.lower(),
-                [
-                    generate_button(
-                        "reschedule",
-                        "reschedule"),
-                    generate_button(
-                        "show my reminders",
-                        "show my reminders")
-                ])
+                if messaging_event.get("optin"):  # optin confirmation
+                    pass
 
-        #handle task 3
-        elif 'show' in message.lower():
-            send_carousel_items(
-                sender,
-                [
-                    generate_carousel_items_buttons(
-                        "Meeting",
-                        "Tomorrow, 8:00AM",
-                        my_reminder_button()),
-                    generate_carousel_items_buttons(
-                        "Call Andi",
-                        "Today, 5:05PM",
-                        my_reminder_button()),
-                    generate_carousel_items_buttons(
-                        "Jogging with Budi",
-                        "Sun, Mar 26, 6:00AM",
-                        my_reminder_button())
-                ])
+                if messaging_event.get("postback"):  # user clicked/tapped "postback" button in earlier message
+                    pass
 
-        #handle task 4
-        elif 'jog' in message.lower():
-            send_button_template_message(
-                sender,
-                "Great. I will remind you to " + message.lower(),
-                [
-                    generate_button(
-                        "reschedule",
-                        "reschedule"),
-                    generate_button(
-                        "show my reminders",
-                        "show my reminders")
-                ])
-            
-            #generate task 5
-            # send_button_template_message(
-            #     sender,
-            #     "Hi, you ask me to remind you to call andi",
-            #     [
-            #         generate_button(
-            #             "mark as done",
-            #             "mark as done"),
-            #         generate_button(
-            #             "snooze",
-            #             "snooze")
-            #         generate_button(
-            #             "my reminders",
-            #             "my reminders"),
-            #     ])
+    return "ok", 200
 
-        #handle task 5
-        elif any(snooze in message.lower() for snooze in snoozes):
-            send_replies(
-                sender, 
-                "What time do you prefer?",
-                [
-                    quick_reply(
-                        "5 min",
-                        "5 min"),
-                    quick_reply(
-                        "15 min",
-                        "15 min"),
-                    quick_reply(
-                        "1 hour",
-                        "1 hour"),
-                    quick_reply(
-                        "1 day",
-                        "1 day")
-                ])
 
-        #handle task 6
-        elif any(done in message.lower() for done in dones):
-                send_text_message(sender, "Great!")
+def send_message(recipient_id, message_text):
 
-        #handle task 7
+    log("sending message to {recipient}: {text}".format(recipient=recipient_id, text=message_text))
 
-        #handle task 9
+    params = {
+        "access_token": os.environ["PAGE_ACCESS_TOKEN"]
+    }
+    headers = {
+        "Content-Type": "application/json"
+    }
+    data = json.dumps({
+        "recipient": {
+            "id": recipient_id
+        },
+        "message": {
+            "text": message_text
+        }
+    })
+    log(data)
+    # r = requests.post("https://graph.facebook.com/v2.6/me/messages", params=params, headers=headers, data=data)
+    # if r.status_code != 200:
+    #     log(r.status_code)
+    #     log(r.text)
 
-        #handle task 10
-        else:
-            send_text_message(sender, "Sorry I'm just a little ducky")
-
-    except:
-        pass
-
-    return "ok"
 
 def log(message):  # simple wrapper for logging to stdout on heroku
     print str(message)
     sys.stdout.flush()
+
 
 if __name__ == '__main__':
     app.run(debug=True)
